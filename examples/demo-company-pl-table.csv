@@ -1,0 +1,46 @@
+﻿Organisation,Section,Account,Period,Period start,Amount
+Demo Company (Global),Trading Income,Sales,Oct 2026,2026-10-01,8237.6
+Demo Company (Global),Trading Income,Sales,Sep 2026,2026-09-01,9106.89
+Demo Company (Global),Trading Income,Sales,Aug 2026,2026-08-01,13347.95
+Demo Company (Global),Cost of Sales,Purchases,Oct 2026,2026-10-01,775.98
+Demo Company (Global),Operating Expenses,Advertising,Oct 2026,2026-10-01,2309.47
+Demo Company (Global),Operating Expenses,Advertising,Sep 2026,2026-09-01,5500
+Demo Company (Global),Operating Expenses,Advertising,Aug 2026,2026-08-01,1847.58
+Demo Company (Global),Operating Expenses,Bank Fees,Sep 2026,2026-09-01,15
+Demo Company (Global),Operating Expenses,Bank Fees,Aug 2026,2026-08-01,15
+Demo Company (Global),Operating Expenses,Cleaning,Oct 2026,2026-10-01,400
+Demo Company (Global),Operating Expenses,Cleaning,Sep 2026,2026-09-01,600
+Demo Company (Global),Operating Expenses,Cleaning,Aug 2026,2026-08-01,110
+Demo Company (Global),Operating Expenses,Consulting & Accounting,Oct 2026,2026-10-01,29
+Demo Company (Global),Operating Expenses,Consulting & Accounting,Sep 2026,2026-09-01,29
+Demo Company (Global),Operating Expenses,Consulting & Accounting,Aug 2026,2026-08-01,29
+Demo Company (Global),Operating Expenses,Entertainment,Sep 2026,2026-09-01,1522
+Demo Company (Global),Operating Expenses,Entertainment,Aug 2026,2026-08-01,31.6
+Demo Company (Global),Operating Expenses,Freight & Courier,Oct 2026,2026-10-01,105.5
+Demo Company (Global),Operating Expenses,General Expenses,Oct 2026,2026-10-01,120.09
+Demo Company (Global),Operating Expenses,General Expenses,Aug 2026,2026-08-01,46.19
+Demo Company (Global),Operating Expenses,"Light, Power, Heating",Oct 2026,2026-10-01,100.32
+Demo Company (Global),Operating Expenses,"Light, Power, Heating",Sep 2026,2026-09-01,125.5
+Demo Company (Global),Operating Expenses,"Light, Power, Heating",Aug 2026,2026-08-01,110
+Demo Company (Global),Operating Expenses,Motor Vehicle Expenses,Oct 2026,2026-10-01,380
+Demo Company (Global),Operating Expenses,Motor Vehicle Expenses,Sep 2026,2026-09-01,137.18
+Demo Company (Global),Operating Expenses,Motor Vehicle Expenses,Aug 2026,2026-08-01,137.18
+Demo Company (Global),Operating Expenses,Office Expenses,Oct 2026,2026-10-01,151.46
+Demo Company (Global),Operating Expenses,Office Expenses,Sep 2026,2026-09-01,369.29
+Demo Company (Global),Operating Expenses,Office Expenses,Aug 2026,2026-08-01,341.73
+Demo Company (Global),Operating Expenses,Printing & Stationery,Sep 2026,2026-09-01,72.7
+Demo Company (Global),Operating Expenses,Printing & Stationery,Aug 2026,2026-08-01,21.71
+Demo Company (Global),Operating Expenses,Rent,Oct 2026,2026-10-01,1091.22
+Demo Company (Global),Operating Expenses,Rent,Sep 2026,2026-09-01,1091.22
+Demo Company (Global),Operating Expenses,Rent,Aug 2026,2026-08-01,1091.22
+Demo Company (Global),Operating Expenses,Repairs and Maintenance,Sep 2026,2026-09-01,64.2
+Demo Company (Global),Operating Expenses,Repairs and Maintenance,Aug 2026,2026-08-01,1832.5
+Demo Company (Global),Operating Expenses,Telephone & Internet,Oct 2026,2026-10-01,151.62
+Demo Company (Global),Operating Expenses,Telephone & Internet,Sep 2026,2026-09-01,43.25
+Demo Company (Global),Operating Expenses,Telephone & Internet,Aug 2026,2026-08-01,41.5
+Demo Company (Global),Operating Expenses,Travel - National,Oct 2026,2026-10-01,267.92
+Demo Company (Global),Operating Expenses,Travel - National,Sep 2026,2026-09-01,133.08
+Demo Company (Global),Operating Expenses,Travel - National,Aug 2026,2026-08-01,32.24
+Demo Company (Global),Operating Expenses,Unrealised Currency Gains,Oct 2026,2026-10-01,13.6
+Demo Company (Global),Operating Expenses,Unrealised Currency Gains,Sep 2026,2026-09-01,30.82
+Demo Company (Global),Operating Expenses,Unrealised Currency Gains,Aug 2026,2026-08-01,-8.38
