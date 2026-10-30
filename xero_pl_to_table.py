@@ -28,11 +28,11 @@ HEAD = ['Organisation', 'Section', 'Account', 'Period', 'Period start', 'Amount'
 MONTHS = {'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6, 'jul': 7,
           'aug': 8, 'sep': 9, 'sept': 9, 'oct': 10, 'nov': 11, 'dec': 12}
 # Rows Xero calculates from other rows. They'd double count in Power BI.
-CALC = re.compile(r'^((gross|net|operating|net operating) (profit|loss|income)|'
-                  r'(profit|loss) (before|after) (income )?tax(ation)?|'
+CALC = re.compile(r'^((gross|net|operating|net operating) (profit|loss|income)( (before|after) (income )?tax(ation)?)?|ebitda|ebit|'
+                  r'(net )?(profit|loss|profit ?/? ?\(?loss\)?) (before|after) (income )?tax(ation)?|'
                   r'(net )?profit ?/? ?\(?loss\)?|(profit|loss) for the (period|year))$', re.I)
 YEAR = re.compile(r'^(19|20)\d\d$')  # a column headed just '2026' (year comparisons) is a period, not an amount
-NUMERIC = re.compile(r"^[\s(−-]*[$€£¥]?[\d.,\s']+\)?-?$")
+NUMERIC = re.compile(r"^[\s(−-]*[$€£¥]?[\d.,\s']+\)?-?\s*[$€£¥]?\)?$")
 
 
 class Row(list):
@@ -106,7 +106,7 @@ def read_csv(path):
 def num(s, comma_decimals=False):
     """Parse an amount as Xero or Excel writes it: 1,234.50 / (1,234.50) / -1.234,50 / '-'. NaN if not a number.
     comma_decimals: the file writes decimals after a comma, so a lone '1.234' is one thousand two hundred and thirty-four."""
-    s = str(s or '').strip().replace('−', '-')
+    s = re.sub(r'\s*[$€£¥]$', '', str(s or '').strip().replace('−', '-'))  # '1.234,50 €'
     if not s:
         return float('nan')
     if s == '-':
@@ -119,7 +119,8 @@ def num(s, comma_decimals=False):
         return float('nan')
     neg = bool(re.fullmatch(r'\(.*\)', s)) or '-' in re.sub(r'\d.*$', '', s) or s.endswith('-')
     s = re.sub(r'[^0-9.,]', '', s)
-    if comma_decimals and re.fullmatch(r'\d{1,3}(\.\d{3})+', s):
+    # Two or more points can only be thousands separators: 1.234.567
+    if (comma_decimals and re.fullmatch(r'\d{1,3}(\.\d{3})+', s)) or re.fullmatch(r'\d{1,3}(\.\d{3}){2,}', s):
         s = s.replace('.', '')
     elif s.rfind(',') > s.rfind('.') and re.search(r',\d{1,2}$', s):
         s = s.replace('.', '').replace(',', '.')
@@ -185,8 +186,9 @@ def analyse(rows, fallback_org=''):
     if head >= 2 and cell(rows[0], 0) and cell(rows[1], 0):
         title, org = cell(rows[0], 0), cell(rows[1], 0)
     # Decimals after a comma (1.234,50) anywhere and never after a point: then '1.234' means 1234 too.
-    values = [cell(row, c) for row in rows[head + 1:] for c, _, _ in cols]
-    comma_decimals = (any(re.search(r'\d,\d{1,2}\)?-?$', v) for v in values)
+    values = [re.sub(r'[\s$€£¥]+', '', cell(row, c)) for row in rows[head + 1:] for c, _, _ in cols]
+    # (or 1.234.567 somewhere: points as thousands separators, so '12.500' in the same file is 12500)
+    comma_decimals = (any(re.search(r'\d,\d{1,2}\)?-?$', v) or re.fullmatch(r'[-(]?\d{1,3}(\.\d{3}){2,}\)?-?', v) for v in values)
                       and not any(re.search(r'\d\.\d{1,2}\)?-?$', v) for v in values))
     # Names that a later 'Total ...' row closes, to tell a heading from an account with no amounts.
     closed = {re.sub(r'^total\s+', '', cell(row, 0).strip(), flags=re.I).lower()
