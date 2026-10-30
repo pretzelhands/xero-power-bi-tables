@@ -190,7 +190,11 @@ def analyse(rows, fallback_org=''):
                       and not any(re.search(r'\d\.\d{1,2}\)?-?$', v) for v in values))
     # Names that a later 'Total ...' row closes, to tell a heading from an account with no amounts.
     closed = {re.sub(r'^total\s+', '', cell(row, 0).strip(), flags=re.I).lower()
-              for row in rows[head + 1:] if cell(row, 0).lower().startswith('total ')}
+              for row in rows[head + 1:] if re.match(r'total\s', cell(row, 0), re.I)}
+
+    def base(x):
+        """A heading's name without Xero's 'Less ' / 'Plus ' prefix, as its 'Total ...' row writes it."""
+        return re.sub(r'^(less|plus):?\s+', '', x, flags=re.I).lower()
     out, stack, accounts = [], [], set()
     after_account = False
     for row in rows[head + 1:]:
@@ -200,8 +204,8 @@ def analyse(rows, fallback_org=''):
         if not any(cell(row, c) for c, _, _ in cols):
             # A heading such as 'Operating Expenses'. Right after an account row with no 'Total <name>' below,
             # it's an account with no amounts in these periods instead: skip it, keep the section.
-            if after_account and name.lower() not in closed and \
-                    re.sub(r'^(less|plus)\s+', '', name, flags=re.I).lower() not in closed:
+            # (Files without total rows: always a heading.)
+            if after_account and closed and name.lower() not in closed and base(name) not in closed:
                 continue
             stack.append(name)
             after_account = False
@@ -210,14 +214,12 @@ def analyse(rows, fallback_org=''):
         if name.lower() == 'total':
             continue
         # 'Total <heading>' closes that heading (and anything nested in it). An account called 'Total ...' stays.
-        if name.lower().startswith('total '):
+        # e.g. 'Total Cost of Sales' closes 'Less Cost of Sales'
+        if re.match(r'total\s', name, re.I):
             target = re.sub(r'^total\s+', '', name, flags=re.I).lower()
-            lower = [x.lower() for x in stack]
+            lower = [base(x) for x in stack]
             if target in lower:
                 del stack[len(lower) - 1 - lower[::-1].index(target):]
-                continue
-            if stack:  # e.g. 'Total Cost of Sales' under 'Less Cost of Sales': closes the innermost heading
-                stack.pop()
                 continue
         if CALC.match(name):
             continue
